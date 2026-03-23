@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Feedback {
+  id                  String   @id @default(cuid())
+  createdAt           DateTime @default(now())
+
+  // Course identity
+  electiveId          String
+  electiveName        String
+  electiveAbbr        String
+  electiveArea        String
+  faculty             String
+
+  // Ratings (0–5)
+  contentRating       Int
+  effortRequired      Int
+
+  // Categorical
+  courseDemand        String?
+  biddingPoints       Int?
+  recommended         String?
+
+  // Text fields
+  overallCourseRating String
+  professorQuality    String
+  courseEvaluation    String
+  learningOutcome     String
+}

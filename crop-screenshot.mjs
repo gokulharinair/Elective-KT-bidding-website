@@ -1,0 +1,10 @@
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const puppeteer = require('C:/Users/gokul/AppData/Local/Temp/puppeteer-test/node_modules/puppeteer/lib/cjs/puppeteer/puppeteer.js');
+const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+const page = await browser.newPage();
+await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 2 });
+await page.goto('http://localhost:3000', { waitUntil: 'networkidle0', timeout: 30000 });
+await page.screenshot({ path: 'C:/Users/gokul/Documents/MIS - KT Website/temporary screenshots/grid-crop.png', clip: { x: 100, y: 1600, width: 380, height: 300 } });
+await browser.close();
+console.log('done');

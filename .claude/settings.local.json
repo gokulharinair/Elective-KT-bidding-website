@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell.exe -NoProfile -Command \":*)",
+      "Bash(powershell.exe -NoProfile -Command \"Get-Content ''C:\\\\Users\\\\gokul\\\\AppData\\\\Local\\\\Temp\\\\nextlogs\\\\out.log'' | Select-Object -Last 20\")",
+      "Bash(powershell.exe -NoProfile:*)"
+    ]
+  }
+}
