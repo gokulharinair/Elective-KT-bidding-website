@@ -1,1 +1,23 @@
-node_modules
+# dependencies
+node_modules/
+
+# next.js build output
+.next/
+out/
+
+# environment variables (contains secrets)
+.env
+.env.local
+.env.*.local
+
+# prisma local db
+prisma/*.db
+prisma/*.db-journal
+
+# misc
+.DS_Store
+*.log
+temporary screenshots/
+update-how-it-works.mjs
+
+.vercel
