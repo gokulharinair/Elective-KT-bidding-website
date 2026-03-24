@@ -627,9 +627,10 @@ export default async function CoursePage({
                   });
 
                   const textFields: { label: string; value: string | null }[] = [
-                    { label: "Feedback", value: fb.overallCourseRating },
+                    { label: "Overall Course Rating", value: fb.overallCourseRating },
+                    { label: "Professor Quality", value: fb.professorQuality || fb.faculty },
                     { label: "Course Evaluation", value: fb.courseEvaluation },
-                    { label: "Learning Outcome", value: fb.learningOutcome },
+                    { label: "Learning Outcomes", value: fb.learningOutcome },
                   ];
 
                   return (
@@ -844,7 +845,3 @@ export default async function CoursePage({
   );
 }
 
-export async function generateStaticParams() {
-  const { electives } = await import("@/lib/electives");
-  return electives.map((e) => ({ id: e.id }));
-}

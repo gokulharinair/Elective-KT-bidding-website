@@ -87,16 +87,22 @@ let created = 0, skipped = 0;
 for (const row of rows) {
   const subject   = String(row['Subject'] || '').trim();
   const area      = String(row['Area'] || '').trim();
-  const professor = String(row['Professor Quality'] || row['Professor'] || '').trim();
-  const genFeedback   = String(row['General Feedback'] || '').trim();
+  const professor     = String(row['Professor'] || row['Professor Quality'] || '').trim();
+  const genFeedbackRaw = String(row['General Feedback'] || '').trim();
   const courseEval    = String(row['Course Evaluation'] || '').trim();
   const learningOut   = String(row['Learning Outcomes'] || '').trim();
-  const rating        = Number(row['Overall Course Rating (1-5)'] || row['Overall Course Rating'] || 0);
-  const effort        = Number(row['Level of Effort Required (1-5)'] || row['Level of Effort Required'] || 0);
-  const demand        = String(row['Course Demand (High/Medium/Low)'] || row['Course Demand'] || '').trim() || null;
+  const rating        = Number(row['Overall Course Rating (1-5, 1 being lowest)'] || row['Overall Course Rating (1-5)'] || 0);
+  const effort        = Number(row['Level of Effort Required (1-5, 1 being lowest)'] || row['Level of Effort Required (1-5)'] || 0);
   const biddingRaw    = row['Bidding Points utilised'] ?? row['Bidding Points'];
   const biddingPoints = (biddingRaw !== '' && biddingRaw != null) ? Number(biddingRaw) : null;
-  const recommended   = String(row['Recommended? Yes/No'] || row['Recommended?'] || '').trim() || null;
+  const recommended   = String(row['Recommended? Yes / No'] || row['Recommended? Yes/No'] || row['Recommended?'] || '').trim() || null;
+
+  // Course demand column: rows 21–35 accidentally have feedback text here instead of demand level
+  const demandRaw = String(row['Course Demand (High / Medium / Low) - from bidding POV'] || row['Course Demand (High/Medium/Low)'] || '').trim();
+  const validDemandLevels = new Set(['Very High', 'High', 'Medium', 'Low', 'Very Low']);
+  const demand = validDemandLevels.has(demandRaw) ? demandRaw : null;
+  // Use demand column text as feedback if General Feedback is empty (data entry error in rows 21–35)
+  const genFeedback = genFeedbackRaw || (!validDemandLevels.has(demandRaw) ? demandRaw : '');
 
   if (!subject) { skipped++; continue; }
 
@@ -126,13 +132,13 @@ for (const row of rows) {
       electiveAbbr:        course.abbr,
       electiveArea:        mappedArea,
       faculty:             professor || 'Faculty',
-      contentRating:       rating || 3,
+      contentRating:       rating || 0,
       effortRequired:      effort || 3,
       courseDemand:        demand,
       biddingPoints:       biddingPoints,
       recommended:         recommended,
       overallCourseRating: genFeedback  || 'No feedback provided.',
-      professorQuality:    '',
+      professorQuality:    professor,
       courseEvaluation:    courseEval   || 'No evaluation provided.',
       learningOutcome:     learningOut  || 'No learning outcomes provided.',
     },
