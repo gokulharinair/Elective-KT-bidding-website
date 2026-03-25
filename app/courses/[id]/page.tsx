@@ -628,7 +628,6 @@ export default async function CoursePage({
 
                   const textFields: { label: string; value: string | null }[] = [
                     { label: "Overall Course Rating", value: fb.overallCourseRating },
-                    { label: "Professor Quality", value: fb.professorQuality || fb.faculty },
                     { label: "Course Evaluation", value: fb.courseEvaluation },
                     { label: "Learning Outcomes", value: fb.learningOutcome },
                   ];
